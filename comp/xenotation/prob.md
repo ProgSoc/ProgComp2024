@@ -26,4 +26,4 @@ Given an integer >= 2, convert it to the following format: Numbers are represent
 The input is an integer >= 2.
 
 ## Output
-The output should be a string of the input number in the format specified above (e.g. `:(:)(:::)((:)(:))((:)((:)))`.
+The output should be a string of the input number in the format specified above (e.g. `:(:)(:::)((:)(:))((:)((:)))`).
