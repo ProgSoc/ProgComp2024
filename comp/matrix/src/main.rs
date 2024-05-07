@@ -1,0 +1,126 @@
+use std::process::exit;
+
+use rand::{rngs::StdRng, Rng, SeedableRng};
+
+fn main() {
+    let args = std::env::args().collect::<Vec<String>>();
+
+    assert_eq!(args.len(), 3);
+
+    let seed = args[2].parse::<u64>().unwrap();
+
+    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+
+    const LOREM_IPSUM: &str = "Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.";
+
+    let mut strings = LOREM_IPSUM
+        .split_whitespace()
+        .map(|s| s.chars().filter(|c| c.is_alphabetic()).collect::<String>())
+        .collect::<Vec<String>>();
+
+    for _ in 0..4 {
+        strings.remove(rng.gen_range(0..strings.len()));
+    }
+
+    match args[1].as_str() {
+        "generate" => {
+            let height = 40;
+            let width = 90;
+
+            let code = draw_code(strings, height, width, &mut rng);
+
+            print_code(code);
+        }
+        "validate" => {
+            let mut buffer = String::new();
+            std::io::stdin().read_line(&mut buffer).unwrap();
+
+            let avg_word_length =
+                strings.iter().map(|s| s.len()).sum::<usize>() as f64 / strings.len() as f64;
+
+            let input_avg_len = buffer
+                .trim()
+                .parse::<f64>()
+                .expect("Expected a positive integer.");
+
+            if (avg_word_length - input_avg_len).abs() < 0.1 {
+                exit(0);
+            } else {
+                exit(1);
+            }
+        }
+        _ => panic!(),
+    }
+}
+
+fn draw_code(
+    strings: Vec<String>,
+    height: usize,
+    width: usize,
+    rng: &mut StdRng,
+) -> Vec<Vec<String>> {
+    let strings = strings
+        .into_iter()
+        .map(|s| s + " ")
+        .collect::<Vec<String>>();
+
+    let height = height + 1; // Spaces at end of each string
+
+    let mut result = vec![vec![" ".to_string(); width]; height];
+
+    for string in strings {
+        let mut x = rng.gen_range(0..width);
+        let mut y = rng.gen_range(0..=height - string.len());
+
+        let (x_original, y_original) = (x, y);
+        while !vert_range_is_vacant(&result, x, y, string.len()) {
+            y += 1;
+            if y + string.len() >= result.len() {
+                y = 0;
+                x = (x + 1) % width;
+
+                // Try a random y so things don't bunch up around the top.
+                if vert_range_is_vacant(&result, x, y_original, string.len()) {
+                    y = y_original;
+                }
+            }
+
+            if x == x_original && y == y_original {
+                panic!("Could not find a place to put the string.");
+            }
+        }
+
+        for c in string.chars() {
+            assert!(y < result.len());
+            assert!(x < result[y].len());
+
+            result[y][x] = c.to_string();
+            y += 1;
+        }
+    }
+
+    result.pop(); // Remove the last row of spaces
+    
+    result
+}
+
+fn vert_range_is_vacant(code: &Vec<Vec<String>>, x: usize, y: usize, len: usize) -> bool {
+    if y != 0 && code[y - 1][x] != " " {
+        return false;
+    }
+
+    (y..y + len).all(|y| position_is_vacant(code, x, y))
+}
+
+fn position_is_vacant(code: &Vec<Vec<String>>, x: usize, y: usize) -> bool {
+    code[y][x] == " "
+}
+
+fn print_code(code: Vec<Vec<String>>) {
+    for row in code {
+        for c in row {
+            print!("{}", c);
+        }
+        println!();
+    }
+}
