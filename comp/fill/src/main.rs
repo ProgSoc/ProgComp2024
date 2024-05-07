@@ -1,4 +1,9 @@
-use std::{ops::{Add, Mul, Sub}, process::exit};
+use std::{
+    collections::hash_map::DefaultHasher,
+    hash::{Hash, Hasher},
+    ops::{Add, Mul, Sub},
+    process::exit,
+};
 
 use rand::{Rng, SeedableRng};
 
@@ -9,7 +14,9 @@ fn main() {
 
     assert_eq!(args.len(), 3);
 
-    let seed = args[2].parse::<u64>().unwrap();
+    let mut s = DefaultHasher::new();
+    args[2].hash(&mut s);
+    let seed = s.finish();
 
     let mut canvas = create_canvas(100, 100);
     paint_crude_circle(&mut canvas, point(50, 50), 35, &Brush { radius: 1 }, seed);

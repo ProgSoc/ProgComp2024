@@ -1,5 +1,6 @@
 use std::{
-    collections::HashMap,
+    collections::{hash_map::DefaultHasher, HashMap},
+    hash::{Hash, Hasher},
     process::exit,
     sync::atomic::{AtomicUsize, Ordering},
 };
@@ -11,7 +12,10 @@ fn main() {
 
     assert_eq!(args.len(), 3);
 
-    let seed = args[2].parse::<u64>().unwrap();
+    let mut s = DefaultHasher::new();
+    args[2].hash(&mut s);
+    let seed = s.finish();
+
     let mut rng = StdRng::seed_from_u64(seed);
 
     let length = rng.gen_range(20..=30);
@@ -46,7 +50,12 @@ struct Node {
     neighbors: Vec<NodeId>,
 }
 
-fn print_graph(graph: &Graph, id_shuffle_map: Option<&HashMap<NodeId, NodeId>>, start: NodeId, end: NodeId) {
+fn print_graph(
+    graph: &Graph,
+    id_shuffle_map: Option<&HashMap<NodeId, NodeId>>,
+    start: NodeId,
+    end: NodeId,
+) {
     print_node(&start, &graph[&start], id_shuffle_map);
     print_node(&end, &graph[&end], id_shuffle_map);
 
@@ -154,7 +163,7 @@ fn create_id_shuffle_map(
     let mut map = HashMap::new();
     map.insert(start, 0);
     map.insert(end, 1);
-   
+
     let mut node_ids = graph.keys().cloned().collect::<Vec<_>>();
     node_ids.retain(|&id| id != start && id != end);
 

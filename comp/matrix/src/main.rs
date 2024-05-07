@@ -1,4 +1,8 @@
-use std::process::exit;
+use std::{
+    collections::hash_map::DefaultHasher,
+    hash::{Hash, Hasher},
+    process::exit,
+};
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
@@ -7,7 +11,9 @@ fn main() {
 
     assert_eq!(args.len(), 3);
 
-    let seed = args[2].parse::<u64>().unwrap();
+    let mut s = DefaultHasher::new();
+    args[2].hash(&mut s);
+    let seed = s.finish();
 
     let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
 
@@ -100,7 +106,7 @@ fn draw_code(
     }
 
     result.pop(); // Remove the last row of spaces
-    
+
     result
 }
 

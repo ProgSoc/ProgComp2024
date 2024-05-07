@@ -1,4 +1,8 @@
-use std::{collections::HashSet, process::exit};
+use std::{
+    collections::{hash_map::DefaultHasher, HashSet},
+    hash::{Hash, Hasher},
+    process::exit,
+};
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
@@ -10,7 +14,9 @@ fn main() {
 
     assert_eq!(args.len(), 3);
 
-    let seed = args[2].parse::<u64>().unwrap();
+    let mut s = DefaultHasher::new();
+    args[2].hash(&mut s);
+    let seed = s.finish();
 
     const GIVENS: usize = 48;
     const MIN_PERMS: usize = 5;

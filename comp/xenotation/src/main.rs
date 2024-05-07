@@ -1,4 +1,8 @@
-use std::process::exit;
+use std::{
+    collections::hash_map::DefaultHasher,
+    hash::{Hash, Hasher},
+    process::exit,
+};
 
 use primes::is_prime;
 use rand::{rngs::StdRng, Rng, SeedableRng};
@@ -8,7 +12,10 @@ fn main() {
 
     assert_eq!(args.len(), 3);
 
-    let seed = args[2].parse::<u64>().unwrap();
+    let mut s = DefaultHasher::new();
+    args[2].hash(&mut s);
+    let seed = s.finish();
+
     let mut rng = StdRng::seed_from_u64(seed);
 
     let n = rng.gen_range(700..10_000);
