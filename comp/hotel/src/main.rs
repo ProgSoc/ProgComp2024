@@ -39,7 +39,7 @@ fn main() {
 
             const MAX_ROOM_NUMBER: usize = 49;
 
-            if *colouring.iter().max().unwrap().1 > MAX_ROOM_NUMBER {
+            if *colouring.iter().map(|(_, room)| room).max().unwrap() > MAX_ROOM_NUMBER {
                 eprintln!("Too many rooms used");
                 exit(1);
             }
