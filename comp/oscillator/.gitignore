@@ -1,2 +1,5 @@
 target/
 plot.*
+*.aux
+*.log
+*.pdf
