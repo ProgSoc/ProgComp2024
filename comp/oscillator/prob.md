@@ -15,7 +15,7 @@ Given the initial positions and velocities of several objects, their masses and 
 ![diagram](diagram.png)
 
 ## Required Formulae 
-* $x(t) = \int v(t) = \iint a(t)$
+* $x(t) = \int v(t) \cdot$ d$t$ = \iint a(t) \cdot$ d$t$.
 * $a = \frac{F}{m}$
 * $F = -kx$ where $x$ is the spring's displacement from it's resting position.
 
