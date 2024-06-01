@@ -85,7 +85,7 @@ fn draw_code(
                 y = 0;
                 x = (x + 1) % width;
 
-                // Try a random y so things don't bunch up around the top.
+                // Try the random y at the new x so things don't bunch up around the top.
                 if vert_range_is_vacant(&result, x, y_original, string.len()) {
                     y = y_original;
                 }

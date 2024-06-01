@@ -8,7 +8,7 @@ exec = ["cargo", "run", "--release", "--", "validate"]
 ```
 
 # 🔐 Insecure Password Comparison
-A web service stores passwords in their hashed form and compares the hashes when a user wants to log in. However, to improve performance the developers of this service decided to only compare the first 3 characters of the hash accidentally making their service far less secure. Given a password hash and the following hash function, find a password that produces a hash that matches the **first 3 characters** of the one provided. 
+A web service stores passwords in their hashed form and [compares the hashes when a user wants to log in](https://en.wikipedia.org/wiki/Cryptographic_hash_function#Password_verification). However, to improve performance the developers of this service decided to only compare the first 3 characters of the hash accidentally making their service far less secure. Given a password hash and the following hash function, find an ASCII password that produces a hash with the **first 3 characters** matching those in the hash provided.
 
 ```python
 def hash(s):
@@ -30,4 +30,4 @@ def hash(s):
 Your input is the hash of the original password.
 
 ## Output
-Your output should be a password that when hashed produces a hash with the **first 3 characters** matching that of the provided hash.
+Your output should be an ASCII password that when hashed produces a hash with the **first 3 characters** matching those of the provided hash.

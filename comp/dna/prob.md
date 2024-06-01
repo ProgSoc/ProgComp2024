@@ -9,10 +9,10 @@ exec = ["cargo", "run", "--release", "--", "validate"]
 
 # 🧬 DNA Similarity
 
-Given two DNA sequences, determine their similarity from **0.0 to 1.0** based on what **fraction of nucleotides match**.
+Given two DNA sequences, determine their similarity from **0.0 to 1.0** based on what **fraction of nucleotides match**. For example:
 
-* `TGAC` and `TGAC` match completely so their similarity is `1.0`.
-* `CGAC` and `TGTC` have the same nucleotide in the 2nd and 4th position meaning that half of them match giving it a similarity of `0.5`
+* `TGAC` and `TGAC` is an exact match so their similarity is `1.0`.
+* `CGAC` and `TGTC` have the same nucleotide in the 2nd and 4th position meaning that half of them match giving a similarity of `0.5`
 * `CAGT` and `CTTG` only have the first nucleotide matching giving them a similarity of `0.25`
 
 ## Input

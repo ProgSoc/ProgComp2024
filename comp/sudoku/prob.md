@@ -13,28 +13,7 @@ Given a sudoku puzzle, determine the **number of unique solutions**.
 ## Rules of Sudoku
 A valid solution to a sudoku puzzle has one of each number from 1 to 9 in every column, row and 3x3 segment. Rows, columns and segments cannot contain a number more than once. The 3x3 segments are are segments in the thicker lines in the example game below. A puzzle starts with several given values and the player must fill in the remaining squares.
 
-```
-┏━━┯━━┯━━┳━━┯━━┯━━┳━━┯━━┯━━┓ 
-┃4 │3 │9 ┃5 │7 │1 ┃8 │2 │6 ┃
-┠──┼──┼──╂──┼──┼──╂──┼──┼──┨
-┃7 │1 │8 ┃  │  │  ┃  │  │  ┃
-┠──┼──┼──╂──┼──┼──╂──┼──┼──┨
-┃5 │6 │2 ┃  │  │  ┃  │  │  ┃
-┣━━┿━━┿━━╋━━┿━━┿━━╋━━┿━━┿━━┫
-┃  │  │1 ┃  │  │7 ┃  │  │  ┃
-┠──┼──┼──╂──┼──┼──╂──┼──┼──┨
-┃  │  │4 ┃  │  │  ┃  │  │  ┃
-┠──┼──┼──╂──┼──┼──╂──┼──┼──┨
-┃9 │  │7 ┃  │  │  ┃  │  │  ┃
-┣━━┿━━┿━━╋━━┿━━┿━━╋━━┿━━┿━━┫
-┃  │  │3 ┃  │  │  ┃  │  │  ┃
-┠──┼──┼──╂──┼──┼──╂──┼──┼──┨
-┃  │  │5 ┃  │4 │  ┃  │3 │  ┃
-┠──┼──┼──╂──┼──┼──╂──┼──┼──┨
-┃  │  │6 ┃  │  │  ┃  │  │  ┃
-┗━━┷━━┷━━┻━━┷━━┷━━┻━━┷━━┷━━┛
-
-```
+![Sudoku Example](https://upload.wikimedia.org/wikipedia/commons/e/e0/Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg)
 
 ## Input
 The input is a 9x9 array of comma separated values. **0 represents an empty square** and 1-9 are filled in squares.
