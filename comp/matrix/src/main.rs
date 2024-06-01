@@ -47,7 +47,7 @@ fn main() {
             let input_avg_len = buffer
                 .trim()
                 .parse::<f64>()
-                .expect("Expected a positive integer.");
+                .expect("Expected a number.");
 
             if (avg_word_length - input_avg_len).abs() < 0.1 {
                 exit(0);

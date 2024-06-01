@@ -1,11 +1,12 @@
 ```toml
 [fuzz]
 exec = ["cargo", "run", "--release", "--", "generate"]
-env = {}
+env = {test = 1}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
 
+[assets]
 public = ["diagram.png"]
 ```
 
