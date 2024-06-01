@@ -1,7 +1,7 @@
 ```toml
 [fuzz]
 exec = ["cargo", "run", "--release", "--", "generate"]
-env = {test = 1}
+env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
