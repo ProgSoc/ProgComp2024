@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 16
+difficulty = 2
 ```
 
 # 📏 Coupled Oscillator

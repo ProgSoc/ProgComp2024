@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 23
+difficulty = 3
 ```
 
 # 🔢 Sudoku Solutions

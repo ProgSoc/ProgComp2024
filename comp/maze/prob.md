@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 11
+difficulty = 2
 ```
 
 # 🧭 Maze Solver

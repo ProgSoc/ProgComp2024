@@ -7,6 +7,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 20
+difficulty = 3
 ```
 
 # 🇦🇶Solar powered research station

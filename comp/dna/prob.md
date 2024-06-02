@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 5
+difficulty = 1
 ```
 
 # 🧬 DNA Similarity

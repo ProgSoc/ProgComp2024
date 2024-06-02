@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 15
+difficulty = 2
 ```
 
 # 🏝️ Recursive Islands
