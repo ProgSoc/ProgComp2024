@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 27
+difficulty = 3
 ```
 
 # 🛸 Esoteric Number Format

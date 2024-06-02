@@ -6,7 +6,9 @@ env = {}
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
 
-public = ["diagram.png"]
+[problem]
+points = 16
+difficulty = 2
 ```
 
 # 📏 Coupled Oscillator
