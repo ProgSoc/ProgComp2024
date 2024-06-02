@@ -32,7 +32,7 @@ fn main() {
             let input = buffer
                 .trim()
                 .parse::<f64>()
-                .expect("Invalid input. Expected positive integer");
+                .expect("Invalid input. Expected number.");
 
             system = simulate(system);
             let solution = system.bodies[0].x.0;

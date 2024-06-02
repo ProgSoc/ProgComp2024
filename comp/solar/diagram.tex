@@ -1,0 +1,44 @@
+\documentclass[tikz,border=40pt]{standalone}
+\usepackage{tikz}
+
+\begin{document}
+    \begin{tikzpicture}
+	\node (0) at (0, 5) {};
+	\node (1) at (-5, 0) {};
+	\node (2) at (0, -5) {};
+	\node (3) at (5, 0) {};
+	\node (4) at (0, 8) {};
+	\node (5) at (0, -8) {};
+	\node (6) at (0, 7) {};
+	\node (7) at (-1.5, 6.75) {};
+	\node (8) at (-1.75, 7.75) {};
+	\node (9) at (1.75, -7.75) {};
+	\node (10) at (-2.4, 8.0) {23.5$^o$};
+	\node (11) at (4.75, 1.25) {};
+	\node (12) at (-4.75, -1.25) {};
+	\node (13) at (-0.75, -5) {};
+	\node (14) at (3.25, -3.75) {};
+	\node (15) at (6.0, 2.2) {lat 0$^o$};
+	\node (16) at (5, -3.75) {lat -76$^o$};
+
+	% sun
+	\node [circle, draw=black, fill=yellow, minimum size=2cm] (17) at (19, 0) {};
+
+	\pgfmathsetmacro{\radius}{5}
+	\pgfmathsetmacro{\tilt}{23.5}
+
+	\draw [thick] [bend right=45] (0.center) to (1.center);
+	\draw [thick] [bend right=45] (1.center) to (2.center);
+	\draw [thick] [bend right=45] (2.center) to (3.center);
+	\draw [thick] [bend right=45] (3.center) to (0.center);
+	\draw [dashed] (5.center) to (4.center);
+	\draw [dotted, line width=0.5mm] [rotate around={\tilt:(0,0)}] (0, 8) to (0, -8);
+    
+	\pgfmathsetmacro{\lat}{70}
+	\pgfmathsetmacro{\xcoord}{\radius*cos(\lat)}
+	\pgfmathsetmacro{\ycoord}{\radius*sin(\lat)}
+
+	\draw [rotate around={\tilt:(0,0)}] (\radius, 0) to (-\radius, 0);
+	\draw [rotate around={\tilt:(0,0)}] (\xcoord, -\ycoord) to (-\xcoord, -\ycoord);
+    \end{tikzpicture}
+\end{document}
