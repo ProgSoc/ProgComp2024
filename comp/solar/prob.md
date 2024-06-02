@@ -1,6 +1,5 @@
 ```toml
 # TODO: Verify that generated answers are actually correct. 
-# TODO: Clarify tilt relative to sun
 
 [fuzz]
 exec = ["cargo", "run", "--release", "--", "generate"]
