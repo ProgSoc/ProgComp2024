@@ -4,7 +4,7 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
 points = 16

@@ -4,7 +4,11 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
+
+[problem]
+difficulty=1
+points=6
 ```
 # 🎨 Fill Bucket Tool
 Given a 100x100 bitmap image, write an algorithm to fill the area of adjacent pixels of the same type **starting from position (50, 50)**. Count and output the **number of pixels that needed to be filled**. 
