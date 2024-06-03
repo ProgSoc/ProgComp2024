@@ -6,7 +6,11 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
+<<<<<<< HEAD
 exec = ["cargo", "run", "--release", "--quite", "--", "validate"]
+=======
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
+>>>>>>> d366487 (fix: add quite flag to cargo)
 
 [problem]
 points = 20
@@ -24,6 +28,13 @@ Given that:
 Find the maximum possible number of joules that can be generated in 1 day within ±0.5 joules.
 
 ![diagram](diagram.png)
+
+## Solar zenith angle
+Power is only generated during the day. Whether or not it is day is determined by whether or not the [solar zenith angle](https://en.wikipedia.org/wiki/Solar_zenith_angle) is positive. For this question, the zenith angle is given by:
+$$
+\cos \theta_S =
+$$
+where $\theta_S$
 
 ## Input
 Your input is the $\alpha$ parameter of the solar cell.
