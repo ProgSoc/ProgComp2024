@@ -24,7 +24,7 @@ Output = 3
 
 
 ## Input
-The input is in a comma separated list with values, `0` for an empty pixel or `1` for a filled pixel. The image will be a crudely drawn circle
+The input is in a comma-separated list with values, `0` for an empty pixel or `1` for a filled pixel. The image will be a crudely drawn circle
 ```
 0, 0, 0, 0, 0
 0, 1, 1, 1, 0
