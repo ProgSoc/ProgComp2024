@@ -47,7 +47,7 @@ fn main() {
             let input_avg_len = buffer
                 .trim()
                 .parse::<f64>()
-                .expect("Expected a positive integer.");
+                .expect("Expected a number.");
 
             if (avg_word_length - input_avg_len).abs() < 0.1 {
                 exit(0);
@@ -85,7 +85,7 @@ fn draw_code(
                 y = 0;
                 x = (x + 1) % width;
 
-                // Try a random y so things don't bunch up around the top.
+                // Try the random y at the new x so things don't bunch up around the top.
                 if vert_range_is_vacant(&result, x, y_original, string.len()) {
                     y = y_original;
                 }

@@ -7,7 +7,7 @@ env = {}
 exec = ["cargo", "run", "--release", "--", "validate"]
 ```
 # 🎨 Fill Bucket Tool
-Given a 100x100 bitmap image, write an algorithm to fill the area of pixels of the same type **starting from position (50, 50)**. Count and **output the number of pixels that needed to be filled**. 
+Given a 100x100 bitmap image, write an algorithm to fill the area of adjacent pixels of the same type **starting from position (50, 50)**. Count and output the **number of pixels that needed to be filled**. 
 
 ```
   XX        XX
