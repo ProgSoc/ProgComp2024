@@ -11,7 +11,7 @@ points = 20
 difficulty = 3
 ```
 
-# Counting Chess Positions
+# ♘ Counting Chess Positions
 
 After deciding to not play further FIDE World Chess Championships,
 Magnus Carlsen got bored of regular old chess to the point where

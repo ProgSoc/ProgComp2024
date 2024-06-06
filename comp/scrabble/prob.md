@@ -11,7 +11,7 @@ points = 20
 difficulty = 3
 ```
 
-# Prefix Scrabble
+# 🔠 Prefix Scrabble
 
 One day, three inter-galactical linguists, Alice, Bob and Charlie, get extremely bored.
 They decide they want to play Scrabble, but with a twist: 'Prefix Scrabble'.
