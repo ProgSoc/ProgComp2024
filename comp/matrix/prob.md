@@ -5,6 +5,10 @@ env = {}
 
 [judge]
 exec = ["cargo", "run", "--release", "--", "validate"]
+
+[problem]
+points = 7
+difficulty = 1
 ```
 
 # 🖥️ Matrix Code

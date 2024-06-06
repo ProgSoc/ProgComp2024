@@ -72,8 +72,9 @@ type RoomNumber = usize;
 struct Occupancy {
     room: Option<RoomNumber>,
     duration: Period,
-    neighbors: HashSet<OccupancyId>,
-    less_than_30_mins_apart: HashSet<OccupancyId>,
+
+    /// Occupancies that cannot be allocated the same room
+    neighbours: HashSet<OccupancyId>,
     ignore: bool,
 }
 
@@ -112,8 +113,7 @@ fn create_graph(stays: &Vec<Period>) -> Vec<Occupancy> {
         .map(|d| Occupancy {
             room: None,
             duration: d.clone(),
-            neighbors: HashSet::new(),
-            less_than_30_mins_apart: HashSet::new(),
+            neighbours: HashSet::new(),
             ignore: false,
         })
         .collect::<Graph>();
@@ -124,14 +124,9 @@ fn create_graph(stays: &Vec<Period>) -> Vec<Occupancy> {
                 continue;
             }
 
-            if graph[i].duration.conincides(&graph[j].duration) {
-                graph[i].neighbors.insert(j);
-                graph[j].neighbors.insert(i);
-            }
-
             if graph[i].duration.distance(&graph[j].duration).abs() <= CLEANING_TIME {
-                graph[i].less_than_30_mins_apart.insert(j);
-                graph[j].less_than_30_mins_apart.insert(i);
+                graph[i].neighbours.insert(j);
+                graph[j].neighbours.insert(i);
             }
         }
     }
@@ -140,9 +135,6 @@ fn create_graph(stays: &Vec<Period>) -> Vec<Occupancy> {
 }
 
 fn colour_graph(graph: &mut Graph) -> usize {
-    // Crude greedy implementation. Can be swapped for
-    // something better if needed.
-
     let mut k = 0;
 
     for i in 0..graph.len() {
@@ -154,7 +146,7 @@ fn colour_graph(graph: &mut Graph) -> usize {
 
         loop {
             let mut found = true;
-            for nei_idx in &graph[i].less_than_30_mins_apart {
+            for nei_idx in &graph[i].neighbours {
                 assert_ne!(*nei_idx, i);
 
                 if graph[*nei_idx].ignore {
@@ -285,6 +277,7 @@ fn try_allocate(staff: &mut Vec<Vec<Job>>, job: &Job) -> bool {
     false
 }
 
+/// Attempts to find timeslots for each job to be completed
 fn can_fit_job(jobs: Vec<Job>) -> bool {
     let allocations = jobs
         .iter()
@@ -429,11 +422,13 @@ fn try_solve(graph: &mut Graph) -> usize {
         } => {
             decolour(graph);
 
+            // Try again making sure that the occupancies that prevented cleaning
+            // are allocated different rooms.
             graph[troublesome_occupancy]
-                .less_than_30_mins_apart
+                .neighbours
                 .insert(prior_occupancy);
             graph[prior_occupancy]
-                .less_than_30_mins_apart
+                .neighbours
                 .insert(troublesome_occupancy);
 
             return try_solve(graph);
@@ -487,7 +482,7 @@ fn apply_colouring(graph: &mut Graph, colouring: HashMap<OccupancyId, RoomNumber
 
 fn has_colouring_conflicts(graph: &Graph) -> bool {
     for i in 0..graph.len() {
-        for j in &graph[i].less_than_30_mins_apart {
+        for j in &graph[i].neighbours {
             if graph[i].room == graph[*j].room {
                 return true;
             }
