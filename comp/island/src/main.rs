@@ -41,7 +41,7 @@ fn main() {
             let input = buffer
                 .trim()
                 .parse::<usize>()
-                .expect("Expected a positive integer.");
+                .graceful_expect("Expected a positive integer.");
 
             if area == input {
                 exit(0);
@@ -50,6 +50,22 @@ fn main() {
             }
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulExpect<T> {
+    fn graceful_expect(self, message: &str) -> T;
+}
+
+impl<T, E> GracefulExpect<T> for Result<T, E> {
+    fn graceful_expect(self, message: &str) -> T {
+        match self {
+            Ok(v) => v,
+            Err(_) => {
+                eprintln!("{}", message);
+                exit(1);
+            }
+        }
     }
 }
 

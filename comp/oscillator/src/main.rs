@@ -32,7 +32,7 @@ fn main() {
             let input = buffer
                 .trim()
                 .parse::<f64>()
-                .expect("Invalid input. Expected number.");
+                .graceful_expect("Invalid input. Expected number.");
 
             system = simulate(system);
             let solution = system.bodies[0].x.0;
@@ -44,6 +44,22 @@ fn main() {
             }
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulExpect<T> {
+    fn graceful_expect(self, message: &str) -> T;
+}
+
+impl<T, E> GracefulExpect<T> for Result<T, E> {
+    fn graceful_expect(self, message: &str) -> T {
+        match self {
+            Ok(v) => v,
+            Err(_) => {
+                eprintln!("{}", message);
+                exit(1);
+            }
+        }
     }
 }
 
@@ -332,6 +348,7 @@ fn simulate(mut system: System) -> System {
 
 use rustplotlib::Figure;
 
+#[allow(dead_code)]
 fn plot(times: Vec<f64>, positions: Vec<Vec<f64>>) {
     use rustplotlib::{Axes2D, Line2D};
 

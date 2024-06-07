@@ -30,7 +30,7 @@ fn main() {
             let input = buffer
                 .trim()
                 .parse::<f64>()
-                .expect("Invalid input. Expected number.");
+                .graceful_expect("Invalid input. Expected number.");
 
             let solution: f64 = simulate(alpha);
 
@@ -41,6 +41,22 @@ fn main() {
             }
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulExpect<T> {
+    fn graceful_expect(self, message: &str) -> T;
+}
+
+impl<T, E> GracefulExpect<T> for Result<T, E> {
+    fn graceful_expect(self, message: &str) -> T {
+        match self {
+            Ok(v) => v,
+            Err(_) => {
+                eprintln!("{}", message);
+                exit(1);
+            }
+        }
     }
 }
 

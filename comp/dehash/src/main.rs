@@ -2,6 +2,37 @@ use std::{collections::hash_map::DefaultHasher, hash::{Hash, Hasher}, process::e
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
+fn main() {
+    let args = std::env::args().collect::<Vec<String>>();
+
+    assert_eq!(args.len(), 3);
+
+    let mut s = DefaultHasher::new();
+    args[2].hash(&mut s);
+    let seed = s.finish();
+
+    let our_hash = hash(random_string(seed));
+
+    match args[1].as_str() {
+        "generate" => {
+            println!("{}", our_hash);
+        }
+        "validate" => {
+            let mut buffer = String::new();
+            std::io::stdin().read_line(&mut buffer).unwrap();
+
+            let user_hash = hash(buffer.trim().to_string());
+
+            if compare_head(our_hash, user_hash) {
+                exit(0);
+            } else {
+                exit(1);
+            }
+        }
+        _ => panic!(),
+    }
+}
+
 fn hash(s: String) -> String {
     const MAGIC: i128 = 123123;
 
@@ -38,33 +69,3 @@ fn compare_head(a: String, b: String) -> bool {
     return a.chars().take(LENGTH).eq(b.chars().take(LENGTH));
 }
 
-fn main() {
-    let args = std::env::args().collect::<Vec<String>>();
-
-    assert_eq!(args.len(), 3);
-
-    let mut s = DefaultHasher::new();
-    args[2].hash(&mut s);
-    let seed = s.finish();
-
-    let our_hash = hash(random_string(seed));
-
-    match args[1].as_str() {
-        "generate" => {
-            println!("{}", our_hash);
-        }
-        "validate" => {
-            let mut buffer = String::new();
-            std::io::stdin().read_line(&mut buffer).unwrap();
-
-            let user_hash = hash(buffer.trim().to_string());
-
-            if compare_head(our_hash, user_hash) {
-                exit(0);
-            } else {
-                exit(1);
-            }
-        }
-        _ => panic!(),
-    }
-}
