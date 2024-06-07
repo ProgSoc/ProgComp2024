@@ -4,7 +4,7 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
 points = 15
@@ -16,7 +16,7 @@ Given a 2D array of elevations, locate all [recursive islands](https://en.wikipe
 
 
 ## Input
-Your input is set of comma separated elevation values where each line is a row and the commas separate elevations from each column.
+Your input is set of comma-separated elevation values where each line is a row and the commas separate elevations from each column.
 ```
 -0.2, -0.2, -0.2, -0.2, -0.2 
 -0.2, -0.1, 0.1, 0.1, 0.0 

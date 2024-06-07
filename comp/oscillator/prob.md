@@ -4,7 +4,7 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
 points = 16
@@ -23,7 +23,7 @@ Given the initial positions and velocities of several objects, their masses and 
 
 
 ## Input
-The input is the initial positions, initial velocities, masses and spring constants of the associated spring of each mass in a comma separated list on each line. Note that the first line is the column headings (you should be able to load this as a CSV if you would like).
+The input is the initial positions, initial velocities, masses and spring constants of the associated spring of each mass in a comma-separated list on each line. Note that the first line is the column headings (you should be able to load this as a CSV if you would like).
 ```
 x, v, m, k
 4.519682246056055, 0.006057547287009886, 0.4720210186778375, 0.7217394413959926

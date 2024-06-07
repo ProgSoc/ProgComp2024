@@ -6,7 +6,7 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
 points = 30
@@ -28,7 +28,7 @@ Each line of the input represents a guest's arrival time followed by their depar
 ```
 
 ## Output
-Your output should be a comma separated list of room numbers **starting from 0** (whitespace is ignored) that corresponds to each line in the input in the order that they are given. The **maximum allowed room number in your answer is 49** as there are only 50 rooms.
+Your output should be a comma-separated list of room numbers **starting from 0** (whitespace is ignored) that corresponds to each line in the input in the order that they are given. The **maximum allowed room number in your answer is 49** as there are only 50 rooms.
 ```
 0, 0, 1, 0, 2, 1, 1, 0
 ```

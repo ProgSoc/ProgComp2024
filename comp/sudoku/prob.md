@@ -4,7 +4,7 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
 points = 23
@@ -20,7 +20,7 @@ A valid solution to a sudoku puzzle has one of each number from 1 to 9 in every 
 ![Sudoku Example](https://upload.wikimedia.org/wikipedia/commons/e/e0/Sudoku_Puzzle_by_L2G-20050714_standardized_layout.svg)
 
 ## Input
-The input is a 9x9 array of comma separated values. **0 represents an empty square** and 1-9 are filled in squares.
+The input is a 9x9 array of comma-separated values. **0 represents an empty square** and 1-9 are filled in squares.
 ```
 0, 2, 0, 0, 0, 0, 0, 0, 0
 5, 0, 0, 1, 0, 9, 0, 7, 0

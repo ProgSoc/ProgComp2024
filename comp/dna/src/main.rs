@@ -38,7 +38,7 @@ fn main() {
                 .parse::<f64>()
                 .map_err(|_| ())
                 .and_then(|x| if x >= 0.0 && x <= 1.0 { Ok(x) } else { Err(()) })
-                .expect("Invalid input. Expected a number beteen 0 and 1");
+                .graceful_expect("Invalid input. Expected a number beteen 0 and 1.");
 
             if (similarity - input_similarity).abs() < 0.0001 {
                 exit(0);
@@ -47,6 +47,22 @@ fn main() {
             }
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulExpect<T> {
+    fn graceful_expect(self, message: &str) -> T;
+}
+
+impl<T, E> GracefulExpect<T> for Result<T, E> {
+    fn graceful_expect(self, message: &str) -> T {
+        match self {
+            Ok(v) => v,
+            Err(_) => {
+                eprintln!("{}", message);
+                exit(1);
+            }
+        }
     }
 }
 

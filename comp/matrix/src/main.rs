@@ -47,7 +47,7 @@ fn main() {
             let input_avg_len = buffer
                 .trim()
                 .parse::<f64>()
-                .expect("Expected a number.");
+                .graceful_expect("Expected a number.");
 
             if (avg_word_length - input_avg_len).abs() < 0.1 {
                 exit(0);
@@ -56,6 +56,22 @@ fn main() {
             }
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulExpect<T> {
+    fn graceful_expect(self, message: &str) -> T;
+}
+
+impl<T, E> GracefulExpect<T> for Result<T, E> {
+    fn graceful_expect(self, message: &str) -> T {
+        match self {
+            Ok(v) => v,
+            Err(_) => {
+                eprintln!("{}", message);
+                exit(1);
+            }
+        }
     }
 }
 

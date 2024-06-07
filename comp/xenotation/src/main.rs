@@ -30,9 +30,9 @@ fn main() {
 
             let input = buffer.trim();
 
-            is_valid_tx_chars(input.to_string()).unwrap();
+            is_valid_tx_chars(input.to_string()).graceful_unwrap();
 
-            let input = parse_tx(input.to_string()).unwrap();
+            let input = parse_tx(input.to_string()).graceful_unwrap();
 
             if input == n {
                 exit(0);
@@ -44,10 +44,26 @@ fn main() {
     }
 }
 
+trait GracefulUnwrap<T> {
+    fn graceful_unwrap(self) -> T;
+}
+
+impl<T> GracefulUnwrap<T> for Result<T, String> {
+    fn graceful_unwrap(self) -> T {
+        match self {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("{}", e);
+                exit(1);
+            }
+        }
+    }
+}
+
 fn is_valid_tx_chars(s: String) -> Result<(), String> {
     for c in s.chars() {
-        if c != ':' && c != '(' && c != ')' && c != '-' && c != 'P' {
-            return Err("Invalid character(s). If this was meant to be numerical it failed to parse. Make sure it fits in a 64-bit unsigned integer.".to_string());
+        if c != ':' && c != '(' && c != ')' {
+            return Err("Invalid character(s).".to_string());
         }
     }
     Ok(())
@@ -56,22 +72,22 @@ fn is_valid_tx_chars(s: String) -> Result<(), String> {
 fn parse_tx(tx: String) -> Result<u64, String> {
     let mut child_call_buffer = "".to_string();
     let mut n = 1;
-    let mut p: i64 = 0;
     let mut brack_depth = 0;
+
     for c in tx.chars() {
         if c == ')' {
             brack_depth -= 1;
             if brack_depth == 0 {
-                run_recusivly_and_flush_buffer(&mut child_call_buffer, &mut p, &mut n)?;
+                run_recusivly_and_flush_buffer(&mut child_call_buffer, &mut n)?;
             }
         }
+
         if brack_depth > 0 {
             child_call_buffer.push(c);
         } else if c == ':' {
             n <<= 1;
-        } else if c == 'P' || c == '-' {
-            return Err(format! {"Found unexpected \"{}\".", c});
         }
+
         if c == '(' {
             brack_depth += 1
         }
@@ -79,24 +95,17 @@ fn parse_tx(tx: String) -> Result<u64, String> {
     if brack_depth != 0 {
         return Err("Unbalanced brackets.".to_string());
     }
-    let r = n as i128 + p as i128;
-    Ok(r as u64)
+    Ok(n as u64)
 }
 
 fn run_recusivly_and_flush_buffer(
     child_call_buffer: &mut String,
-    p: &mut i64,
     n: &mut u64,
 ) -> Result<(), String> {
-    Ok(if *child_call_buffer == "-P" {
-        *p -= 1;
-    } else if *child_call_buffer == "(-P)" {
-        *p -= 2
-    } else {
-        let child = parse_tx(child_call_buffer.clone())?;
-        *child_call_buffer = "".to_string();
-        *n *= nth_prime(child);
-    })
+    let child = parse_tx(child_call_buffer.clone())?;
+    *child_call_buffer = "".to_string();
+    *n *= nth_prime(child);
+    Ok(())
 }
 
 fn nth_prime(n: u64) -> u64 {
