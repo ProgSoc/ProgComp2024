@@ -11,7 +11,6 @@ points = 20
 difficulty = 3
 ```
 
-
 # ♟️ Counting Chess Positions
 
 After deciding to not play further FIDE World Chess Championships,
