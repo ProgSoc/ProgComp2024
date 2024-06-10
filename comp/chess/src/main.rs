@@ -28,23 +28,11 @@ fn square_to_string(sq: u64) -> String {
 
 #[allow(dead_code)]
 fn move_string(mv: u64) -> String {
-    let piece_type = match (mv >> 12) & 0x7 {
-        KING => "K",
-        QUEEN => "Q",
-        ROOK => "R",
-        BISHOP => "B",
-        KNIGHT => "N",
-        _ => "",
-    };
-    let capture = if (mv >> 15) == 1 { "x" } else { "" };
     let o = mv & 0x3f;
     let d = (mv >> 6) & 0x3f;
-
     format!(
-        "{}{}{}{}",
-        piece_type,
+        "{}{}",
         square_to_string(o),
-        capture,
         square_to_string(d)
     )
 }

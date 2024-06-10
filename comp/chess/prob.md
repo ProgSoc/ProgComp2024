@@ -32,6 +32,7 @@ A **pseudo-legal** move for White in this context refers to a move that has the 
   an empty square or a square occupied by a Black piece,
   **with the exception of the Black king**.
 * May potentially check the Black king and/or leave the White king in check when the move is made.
+* Kings are allowed to be adjacent to each other.
 
 Additionally, we are counting **unique move sequences**,
 so if we ever reach a previously reached *position* from a different *move order*,
@@ -90,7 +91,7 @@ By considering all the White pieces on the board in this way,
 there are 51 pseudo-legal moves in the above position.
 
 For this example, if White could make 4 pseudo-legal moves in a row,
-we would ultimately end up with **7320026** possible unique sequences of moves.
+we would ultimately end up with **7268234** possible unique sequences of moves.
 
 ## Input
 
@@ -120,5 +121,5 @@ A single number representing the number of unique move sequences.
 
 For the example above, the output will be the following.
 ```
-7320026
+7268234
 ```
