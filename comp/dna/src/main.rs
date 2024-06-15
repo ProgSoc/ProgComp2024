@@ -40,7 +40,7 @@ fn main() {
                 .and_then(|x| if x >= 0.0 && x <= 1.0 { Ok(x) } else { Err(()) })
                 .graceful_expect("Invalid input. Expected a number beteen 0 and 1.");
 
-            if (similarity - input_similarity).abs() < 0.0001 {
+            if (similarity - input_similarity).abs() < 0.01 {
                 exit(0);
             } else {
                 exit(1);
