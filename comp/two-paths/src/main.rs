@@ -115,7 +115,7 @@ fn generate_graph<R: Rng>(rng: &mut R, node_list: Vec<NodeID>) -> Graph {
 
         for node in &node_list {
             graph.get_mut(node).unwrap().append(
-                &mut (node_list.choose_multiple(rng, 4))
+                &mut (node_list.choose_multiple(rng, 3))
                     .map(|&x| (x, rng.gen_range(1000..=5000)))
                     .collect::<Vec<_>>(),
             );
@@ -160,7 +160,7 @@ fn main() {
     // Generate random graph.
     let mut node_list: Vec<NodeID> = (1..17575)
         .collect::<Vec<u32>>()
-        .choose_multiple(&mut rng, 20)
+        .choose_multiple(&mut rng, 10)
         .map(|&x| node_from_integer(x))
         .collect();
 
