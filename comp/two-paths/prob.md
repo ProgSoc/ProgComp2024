@@ -7,36 +7,29 @@ env = {}
 exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
-points = 7
-difficulty = 1
+points = 14
+difficulty = 2
 ```
 
 # 🏤 Two Paths
 
 Two travelling salesmen, Mario and Luigi, come across a region full of cities and one-way bridges
 (that is, bridges that have one-way traffic) connecting them.
-Associated with each bridge is a reward such that when a salesman passes through a bridge of reward `x`,
-that salesman will obtain `x` dollars.
+Crossing a bridge will grant the salesman a reward of `x` dollars.
 
-Both Mario and Luigi start from City `aaa` and aim to reach City `zzz`.
-However, Mario also wants to obtain the maximum amount of money on the way,
-while Luigi (for some reason) wants to obtain the least amount of money.
+They intend to cross bridges this way,
+going from one city to the next, such that they walk a path that
+starts from City `aaa` and ends in City `zzz`.
+Additionally, Mario will always take the path that gives him the **most** money,
+and Luigi (for some reason) will always take the path that gives him the **least** money.
 
 Princess Peach has said that after both Mario and Luigi conclude their commutes,
 she will pay them the amount of money equal to the **product** of Mario's collected money
 and Luigi's collected money. For example, if Mario collects **$15** and Luigi collects **$5**,
 Princess Peach will pay out **$75**.
 
-The only restrictions about Mario and Luigi's paths are that
-they must start from City `aaa` and end their path in City `zzz`,
-and they cannot pass through the same city along their path twice.
-
-For example, `aaa -> bbb -> zzz` and `aaa -> zzz` are valid paths,
-while `aaa -> bbb -> ccc -> bbb -> zzz` and `aaa -> aaa -> zzz` are invalid paths.
-
-Hence, Mario and Luigi aim to answer the question:
-Given a certain map, if Mario and Luigi behave exactly as described,
-how much money would Princess Peach give them?
+Help Mario and Luigi answer the following question:
+Given a certain map, how much money would Princess Peach give them?
 
 ## Input
 
@@ -57,7 +50,7 @@ eee -> ccc: 4, ddd: 4, zzz: 2
 zzz -> ddd: 5, eee: 2
 ```
 
-There are 6 cities including the starting and ending cities `aaa` and `zzz`.
+There are 6 cities (including the starting and ending cities `aaa` and `zzz`).
 
 The first line of this input indicates that there are two outgoing bridges from City `aaa`:
 
@@ -77,7 +70,11 @@ Therefore, in this example, Princess Peach will give them **$128** in reward.
 ### Constraints
 
 * All city names are three characters in length, consisting only of lowercase English characters.
+* Both Mario and Luigi must start from City `aaa` and end in City `zzz`.
 * All rewards associated with bridges are positive integers.
+* Paths must not pass through the same city twice. For example,
+  * `aaa -> bbb -> zzz` and `aaa -> zzz` are valid paths,
+  * `aaa -> bbb -> ccc -> bbb -> zzz` and `aaa -> aaa -> zzz` are invalid paths.
 
 ## Output
 
