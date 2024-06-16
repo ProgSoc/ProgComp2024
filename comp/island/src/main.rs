@@ -12,6 +12,7 @@ use noise::{
 };
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
+use solve::solve;
 
 mod solve;
 
@@ -34,22 +35,36 @@ fn main() {
             let mut buffer = String::new();
             std::io::stdin().read_line(&mut buffer).unwrap();
 
-            let land_masses = solve::recurive_islands(&terrain);
-
-            let area = land_masses.iter().map(|lm| lm.area()).sum::<usize>();
+            let area = solve(&terrain).unwrap();
 
             let input = buffer
                 .trim()
                 .parse::<usize>()
-                .expect("Expected a positive integer.");
+                .graceful_expect("Expected a positive integer.");
 
-            if area == input {
+            if area == input as i32 {
                 exit(0);
             } else {
                 exit(1);
             }
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulExpect<T> {
+    fn graceful_expect(self, message: &str) -> T;
+}
+
+impl<T, E> GracefulExpect<T> for Result<T, E> {
+    fn graceful_expect(self, message: &str) -> T {
+        match self {
+            Ok(v) => v,
+            Err(_) => {
+                eprintln!("{}", message);
+                exit(1);
+            }
+        }
     }
 }
 
@@ -243,7 +258,7 @@ fn island(width: usize, height: usize, center: Point, seed: u64, size: f64) -> T
 }
 
 fn generate_problem(seed: u64) -> Terrain {
-    let (width, height) = (400, 400);
+    let (width, height) = (350, 350);
 
     let mut rng = StdRng::seed_from_u64(seed);
 
@@ -294,8 +309,7 @@ fn generate_problem(seed: u64) -> Terrain {
 
     terrain = gauss_blur(terrain);
 
-    let recursive_islands = solve::recurive_islands(&terrain);
-    if recursive_islands.len() < 3 {
+    if solve(&terrain).is_none() || terrain[0][0] > 0.0 {
         return generate_problem(seed + 1);
     }
 

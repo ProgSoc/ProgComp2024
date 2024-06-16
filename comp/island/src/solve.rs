@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::Terrain;
+use crate::{print_terrain, Terrain};
 
 #[derive(Clone)]
 pub struct LandMass {
@@ -81,30 +81,14 @@ impl LandMass {
             && self.smallest_x <= other.smallest_x
             && self.smallest_y <= other.smallest_y
     }
-    
-    fn edge(&self, terrain: &Terrain) -> Option<(i64, i64)> {
-        let (mut x, y) = self.points[0];
-
-        while terrain[y as usize][x as usize] > 0.0 {
-            x += 1;
-
-            if x < 0 || x >= terrain[0].len() as i64 {
-                return None;
-            }
-        }
-
-        assert!(self.connected(x, y));
-
-        Some((x, y))
-    }
 }
 
-fn find_land_masses(terrain: &Terrain) -> Vec<LandMass> {
+fn find_land_masses(terrain: &LandTerrain) -> Vec<LandMass> {
     let mut land_masses: Vec<LandMass> = vec![];
 
     for x in 0..terrain[0].len() {
         for y in 0..terrain.len() {
-            if terrain[y][x] > 0.0 {
+            if terrain[y][x] == LAND {
                 let x = x as i64;
                 let y = y as i64;
 
@@ -140,72 +124,56 @@ fn find_land_masses(terrain: &Terrain) -> Vec<LandMass> {
     land_masses
 }
 
-pub fn recurive_islands(terrain: &Terrain) -> Vec<LandMass> {
-    let land_masses = find_land_masses(terrain);
+type LandTerrain = Vec<Vec<bool>>;
+static WATER: bool = false;
+static LAND: bool = true;
 
-    let mut recursive_islands: Vec<LandMass> = vec![];
+/// Returns None if there was not enough recursive islands.
+pub fn solve(terrain: &Terrain) -> Option<i32> {
+    let mut land: LandTerrain = terrain
+        .iter()
+        .map(|row| row.iter().map(|&x| x > 0.0).collect())
+        .collect();
 
-    for (i, inner_land_mass) in land_masses.iter().enumerate() {
-        for (j, outer_land_mass) in land_masses.iter().enumerate() {
-            if i == j {
-                continue;
-            }
+    let x: i32 = 0;
+    let y: i32 = 0;
 
-            if !outer_land_mass.contains_land_mass(inner_land_mass) {
-                continue;
-            }
+    assert_eq!(land[x as usize][y as usize], WATER);
 
-            let edge = inner_land_mass.edge(terrain);
+    flood(&mut land, x, y, &LAND);
+    flood(&mut land, x, y, &WATER);
 
-            if edge.is_none() {
-                continue;
-            }
+    let land_masses = find_land_masses(&land);
 
-            let (x, y) = edge.unwrap();
-
-            if x < 0 || y < 0 || x >= terrain[0].len() as i64 || y >= terrain.len() as i64 {
-                continue;
-            }
-            
-            let surrounded = lake_flood(terrain, x, y, outer_land_mass);
-
-            if surrounded {
-                recursive_islands.push(inner_land_mass.clone());
-            }
-        }
+    if land_masses.len() < 3 {
+        return None;
     }
 
-    recursive_islands
+    return Some(
+        land.iter()
+            .map(|row| row.iter().filter(|&&x| x).count())
+            .sum::<usize>() as i32,
+    );
 }
 
-fn lake_flood(terrain: &Terrain, x: i64, y: i64, bounding_box: &LandMass) -> bool {
-    let mut visited = HashSet::new();
-    __lake_flood(terrain, x, y, &mut visited, bounding_box)
-}
-
-fn __lake_flood(
-    terrain: &Terrain,
-    x: i64,
-    y: i64,
-    visited: &mut HashSet<(i64, i64)>,
-    bounding_box: &LandMass,
-) -> bool {
-    if x < 0 || y < 0 || x >= terrain[0].len() as i64 || y >= terrain.len() as i64 {
-        return false;
+/// Stack can get dangerously large. May need a non-recursive solution.
+fn flood(land_terrain: &mut LandTerrain, x: i32, y: i32, fill_with: &bool) {
+    if x < 0 || x >= land_terrain[0].len() as i32 {
+        return;
     }
 
-    if terrain[y as usize][x as usize] > 0.0 || visited.contains(&(x, y)) {
-        return true;
+    if y < 0 || y >= land_terrain.len() as i32 {
+        return;
     }
 
-    visited.insert((x, y));
-
-    if !bounding_box.within_bounding_box(x, y) {
-        return false;
+    if land_terrain[y as usize][x as usize] == *fill_with {
+        return;
     }
 
-    __lake_flood(terrain, x + 1, y, visited, bounding_box)
-        && __lake_flood(terrain, x - 1, y, visited, bounding_box)
-        && __lake_flood(terrain, x, y + 1, visited, bounding_box)
-        && __lake_flood(terrain, x, y - 1, visited, bounding_box)
+    land_terrain[y as usize][x as usize] = *fill_with;
+
+    flood(land_terrain, x + 1, y, fill_with);
+    flood(land_terrain, x - 1, y, fill_with);
+    flood(land_terrain, x, y + 1, fill_with);
+    flood(land_terrain, x, y - 1, fill_with);
 }

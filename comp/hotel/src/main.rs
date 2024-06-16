@@ -25,22 +25,22 @@ fn main() {
             let mut buffer = String::new();
             std::io::stdin().read_line(&mut buffer).unwrap();
 
-            let colouring = parse_colouring(buffer).unwrap();
+            let colouring = parse_colouring(buffer).graceful_unwrap();
 
             if colouring.len() < problem.len() {
-                eprintln!("Too few allocations");
+                eprintln!("Too few allocations.");
                 exit(1);
             }
 
             if colouring.len() > problem.len() {
-                eprintln!("Too many allocations");
+                eprintln!("Too many allocations.");
                 exit(1);
             }
 
             const MAX_ROOM_NUMBER: usize = 49;
 
             if *colouring.iter().map(|(_, room)| room).max().unwrap() > MAX_ROOM_NUMBER {
-                eprintln!("Too many rooms used");
+                eprintln!("Too many rooms used.");
                 exit(1);
             }
 
@@ -49,7 +49,7 @@ fn main() {
             apply_colouring(&mut graph, colouring);
 
             if has_colouring_conflicts(&graph) {
-                eprintln!("Some guests where assigned the same room at the same time");
+                eprintln!("Some guests where assigned the same room at the same time.");
                 exit(1);
             }
 
@@ -61,6 +61,22 @@ fn main() {
             exit(0);
         }
         _ => panic!(),
+    }
+}
+
+trait GracefulUnwrap<T> {
+    fn graceful_unwrap(self) -> T;
+}
+
+impl<T> GracefulUnwrap<T> for Result<T, String> {
+    fn graceful_unwrap(self) -> T {
+        match self {
+            Ok(v) => v,
+            Err(e) => {
+                eprintln!("{}", e);
+                exit(1);
+            }
+        }
     }
 }
 
@@ -460,7 +476,7 @@ fn parse_colouring(colouring: String) -> Result<HashMap<OccupancyId, RoomNumber>
         let room = room_allocation
             .trim()
             .parse::<RoomNumber>()
-            .map_err(|_| "Expected numbers")?;
+            .map_err(|_| "Expected numbers.")?;
 
         assert!(map.get(&occ_id).is_none());
 

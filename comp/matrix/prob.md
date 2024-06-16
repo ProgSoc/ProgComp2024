@@ -4,7 +4,7 @@ exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}
 
 [judge]
-exec = ["cargo", "run", "--release", "--", "validate"]
+exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
 points = 7
@@ -12,7 +12,7 @@ difficulty = 1
 ```
 
 # 🖥️ Matrix Code
-Given several lines of text with words written vertically across lines, extract the vertical words and output the **average length** of all words. 
+Given several lines of text with words written vertically across lines, extract the vertical words and output the **average length** of all words to **2 decimal places**. 
 
 ## Input
 Input is several lines in the following format.
@@ -41,4 +41,4 @@ Input is several lines in the following format.
 The average length for this input would be `5.0`.
 
 ## Output
-Output a floating point number representing the average length of all of the extracted vertical words. 
+Output a floating point number representing the average length of all of the extracted vertical words to **2 decimal places**. 
