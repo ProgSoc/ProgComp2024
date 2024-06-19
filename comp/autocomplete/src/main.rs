@@ -58,54 +58,54 @@ impl<T, E> GracefulExpect<T> for Result<T, E> {
     }
 }
 
-fn download_articles() {
-    let wiki = wikipedia::Wikipedia::<wikipedia::http::default::Client>::default();
-
-    const ARTICLES: [&str; 6] = [
-        "Horseshoe crab",
-        "Penitente (snow formation)",
-        "Voynich manuscript",
-        "Glacialisaurus",
-        "Bird intelligence",
-        "Mojibake",
-    ];
-
-    for title in ARTICLES.iter() {
-        let page = wiki.page_from_title(title.to_string());
-
-        let content = page.get_content().unwrap();
-        let content = format_article(&content);
-
-        write_to_file(&content, &format_title(&title));
-    }
-}
-
-fn format_article(text: &str) -> String {
-    text.split_whitespace()
-        .map(|word| word.trim_matches(|c: char| !c.is_alphabetic() || !c.is_ascii()))
-        .map(|word| word.to_lowercase())
-        .filter(|word| !word.is_empty())
-        .collect::<Vec<String>>()
-        .join(" ")
-}
-
-fn format_title(title: &str) -> String {
-    title
-        .split_whitespace()
-        .map(|word| word.trim_matches(|c: char| !c.is_alphabetic()))
-        .map(|word| word.to_lowercase())
-        .filter(|word| !word.is_empty())
-        .collect::<Vec<String>>()
-        .join("-")
-}
-
-fn write_to_file(contents: &str, name: &str) {
-    use std::fs::File;
-    use std::io::Write;
-
-    let mut file = File::create(format!("wiki_articles/{name}.txt")).unwrap();
-    file.write_all(contents.as_bytes()).unwrap();
-}
+// fn download_articles() {
+//     let wiki = wikipedia::Wikipedia::<wikipedia::http::default::Client>::default();
+//
+//     const ARTICLES: [&str; 6] = [
+//         "Horseshoe crab",
+//         "Penitente (snow formation)",
+//         "Voynich manuscript",
+//         "Glacialisaurus",
+//         "Bird intelligence",
+//         "Mojibake",
+//     ];
+//
+//     for title in ARTICLES.iter() {
+//         let page = wiki.page_from_title(title.to_string());
+//
+//         let content = page.get_content().unwrap();
+//         let content = format_article(&content);
+//
+//         write_to_file(&content, &format_title(&title));
+//     }
+// }
+//
+// fn format_article(text: &str) -> String {
+//     text.split_whitespace()
+//         .map(|word| word.trim_matches(|c: char| !c.is_alphabetic() || !c.is_ascii()))
+//         .map(|word| word.to_lowercase())
+//         .filter(|word| !word.is_empty())
+//         .collect::<Vec<String>>()
+//         .join(" ")
+// }
+//
+// fn format_title(title: &str) -> String {
+//     title
+//         .split_whitespace()
+//         .map(|word| word.trim_matches(|c: char| !c.is_alphabetic()))
+//         .map(|word| word.to_lowercase())
+//         .filter(|word| !word.is_empty())
+//         .collect::<Vec<String>>()
+//         .join("-")
+// }
+//
+// fn write_to_file(contents: &str, name: &str) {
+//     use std::fs::File;
+//     use std::io::Write;
+//
+//     let mut file = File::create(format!("wiki_articles/{name}.txt")).unwrap();
+//     file.write_all(contents.as_bytes()).unwrap();
+// }
 
 fn solve(article: &str) -> usize {
     let mut words: HashSet<String> = HashSet::new();
