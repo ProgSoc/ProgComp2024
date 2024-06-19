@@ -19,16 +19,30 @@ From a list of arrival and departure of hotel guests as timestamps **in seconds*
 Each line of the input represents a guest's arrival time followed by their departure time separated by a comma in Unix seconds.
 
 ```
-84182, 106880
-44259, 68108
-49341, 70061
-94694, 116988
-37514, 51200
-83244, 103676
+34733, 46231
+35492, 53938
+32985, 52534
+23745, 32775
+29162, 37479
+24443, 36335
+19190, 31646
+12526, 30995
+29457, 37768
+35407, 43158
+34733, 46231
+35492, 53938
+32985, 52534
+23745, 32775
+29162, 37479
+24443, 36335
+19190, 31646
+12526, 30995
+29457, 37768
+35407, 43158
 ```
 
 ## Output
 Your output should be a comma-separated list of room numbers **starting from 0** (whitespace is ignored) that corresponds to each line in the input in the order that they are given. The **maximum allowed room number in your answer is 49** as there are only 50 rooms.
 ```
-0, 0, 1, 0, 2, 1, 1, 0
+0, 1, 2, 0, 3, 4, 1, 2, 5, 6, 
 ```
