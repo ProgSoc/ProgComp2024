@@ -2,6 +2,67 @@ use std::collections::HashSet;
 
 use crate::{print_terrain, Terrain};
 
+
+type LandTerrain = Vec<Vec<bool>>;
+static WATER: bool = false;
+static LAND: bool = true;
+
+/// Returns None if there was not enough recursive islands.
+pub fn solve(terrain: &Terrain) -> Option<i32> {
+    let mut land: LandTerrain = terrain
+        .iter()
+        .map(|row| row.iter().map(|&x| x > 0.0).collect())
+        .collect();
+
+    let x: i32 = 0;
+    let y: i32 = 0;
+
+    assert_eq!(land[x as usize][y as usize], WATER);
+
+    flood(&mut land, x, y, &LAND);
+    flood(&mut land, x, y, &WATER);
+
+    let land_masses = find_land_masses(&land);
+
+    if land_masses.len() < 3 {
+        return None;
+    }
+
+    return Some(
+        land.iter()
+            .map(|row| row.iter().filter(|&&x| x).count())
+            .sum::<usize>() as i32,
+    );
+}
+
+fn flood(land_terrain: &mut LandTerrain, x: i32, y: i32, fill_with: &bool) {
+    let mut stack: Vec<(i32, i32)> = vec![(x, y)];
+
+    while let Some((x, y)) = stack.pop() {
+        if x < 0 || x >= land_terrain[0].len() as i32 {
+            continue;
+        }
+
+        if y < 0 || y >= land_terrain.len() as i32 {
+            continue;
+        }
+
+        if land_terrain[y as usize][x as usize] == *fill_with {
+            continue;
+        }
+
+        land_terrain[y as usize][x as usize] = *fill_with;
+
+        stack.push((x + 1, y));
+        stack.push((x - 1, y));
+        stack.push((x, y + 1));
+        stack.push((x, y - 1));
+    }
+}
+
+
+/// Used to count the number of recursive islands to ensure that there are at least 3
+/// when generating the question.
 #[derive(Clone)]
 pub struct LandMass {
     points: Vec<(i64, i64)>,
@@ -122,58 +183,4 @@ fn find_land_masses(terrain: &LandTerrain) -> Vec<LandMass> {
     }
 
     land_masses
-}
-
-type LandTerrain = Vec<Vec<bool>>;
-static WATER: bool = false;
-static LAND: bool = true;
-
-/// Returns None if there was not enough recursive islands.
-pub fn solve(terrain: &Terrain) -> Option<i32> {
-    let mut land: LandTerrain = terrain
-        .iter()
-        .map(|row| row.iter().map(|&x| x > 0.0).collect())
-        .collect();
-
-    let x: i32 = 0;
-    let y: i32 = 0;
-
-    assert_eq!(land[x as usize][y as usize], WATER);
-
-    flood(&mut land, x, y, &LAND);
-    flood(&mut land, x, y, &WATER);
-
-    let land_masses = find_land_masses(&land);
-
-    if land_masses.len() < 3 {
-        return None;
-    }
-
-    return Some(
-        land.iter()
-            .map(|row| row.iter().filter(|&&x| x).count())
-            .sum::<usize>() as i32,
-    );
-}
-
-/// Stack can get dangerously large. May need a non-recursive solution.
-fn flood(land_terrain: &mut LandTerrain, x: i32, y: i32, fill_with: &bool) {
-    if x < 0 || x >= land_terrain[0].len() as i32 {
-        return;
-    }
-
-    if y < 0 || y >= land_terrain.len() as i32 {
-        return;
-    }
-
-    if land_terrain[y as usize][x as usize] == *fill_with {
-        return;
-    }
-
-    land_terrain[y as usize][x as usize] = *fill_with;
-
-    flood(land_terrain, x + 1, y, fill_with);
-    flood(land_terrain, x - 1, y, fill_with);
-    flood(land_terrain, x, y + 1, fill_with);
-    flood(land_terrain, x, y - 1, fill_with);
 }

@@ -122,6 +122,7 @@ fn link_nodes(graph: &mut Graph, a: NodeId, b: NodeId) {
     graph.get_mut(&b).unwrap().neighbors.push(a);
 }
 
+/// Create a chain of nodes and link them together in a chain.
 fn create_chain(graph: &mut Graph, length: usize) -> Vec<NodeId> {
     let mut node_ids = vec![];
     for _ in 0..length {
@@ -134,6 +135,7 @@ fn create_chain(graph: &mut Graph, length: usize) -> Vec<NodeId> {
     node_ids
 }
 
+/// Create several nodes and link them together randomly.
 fn create_web<R: Rng>(graph: &mut Graph, rng: &mut R) -> Vec<NodeId> {
     let node_count = rng.gen_range(10..=20);
     let mut node_ids = vec![];
@@ -172,6 +174,10 @@ fn swap_vec_elements<T: Clone>(vec: &mut Vec<T>, a: usize, b: usize) {
     vec[b] = tmp;
 }
 
+/// Creates a map of current IDs to new shuffled IDs.
+/// Also makes sure that the start and end have IDs 0 and 1 respectively
+/// as this is specified in the question and makes it easier for people to
+/// implement.
 fn create_id_shuffle_map<R: Rng>(
     graph: &Graph,
     rng: &mut R,
@@ -203,8 +209,13 @@ fn create_maze<R: Rng>(route_length: usize, rng: &mut R) {
 
     let mut graph = Graph::new();
 
+    // Creates the correct path through the maze.
     let chain_node_ids = create_chain(&mut graph, route_length);
 
+    // Create several webs and correct them to single points in the main chain.
+    // This ensures that the maze in complicated but there is only one solution
+    // as all of the webs will be self-contained and not create any alternative
+    // paths to the end of the maze.
     for chain_node_id in &chain_node_ids {
         let mut web_node_ids = create_web(&mut graph, rng);
         let links = rng.gen_range(1..web_node_ids.len());
@@ -224,6 +235,7 @@ fn create_maze<R: Rng>(route_length: usize, rng: &mut R) {
     let end = *chain_node_ids.last().unwrap();
     assert_ne!(start, end);
 
+    // Shuffles IDs so that the main chain doesn't have consecutive IDs.
     let id_shuffle_map = create_id_shuffle_map(&graph, rng, start, end);
 
     print_graph(&graph, Some(&id_shuffle_map), start, end);

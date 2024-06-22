@@ -1,6 +1,5 @@
 #![allow(non_snake_case)]
 
-use std::ops::{Add, Div, Mul, Sub};
 use std::{
     collections::hash_map::DefaultHasher,
     hash::{Hash, Hasher},
@@ -11,6 +10,10 @@ use std::{
 use rand::{Rng, SeedableRng};
 
 use rand_chacha::ChaChaRng;
+
+mod units;
+
+use units::*;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -65,113 +68,6 @@ impl<T, E> GracefulExpect<T> for Result<T, E> {
     }
 }
 
-#[derive(Copy, Clone, Debug, PartialEq)]
-struct Position(f64);
-#[derive(Copy, Clone, Debug)]
-struct Velocity(f64);
-#[derive(Copy, Clone, Debug)]
-struct Acceleration(f64);
-#[derive(Copy, Clone, Debug)]
-struct Time(f64);
-#[derive(Copy, Clone, Debug)]
-struct Mass(f64);
-#[derive(Copy, Clone, Debug)]
-struct Force(f64);
-#[derive(Copy, Clone, Debug)]
-struct SpringConstant(f64);
-
-impl Mul<Time> for Acceleration {
-    type Output = Velocity;
-
-    fn mul(self, time: Time) -> Velocity {
-        Velocity(self.0 * time.0)
-    }
-}
-
-impl Mul<Time> for Velocity {
-    type Output = Position;
-
-    fn mul(self, time: Time) -> Position {
-        Position(self.0 * time.0)
-    }
-}
-
-impl Add<Velocity> for Velocity {
-    type Output = Velocity;
-
-    fn add(self, other: Velocity) -> Velocity {
-        Velocity(self.0 + other.0)
-    }
-}
-
-impl Add<Position> for Position {
-    type Output = Position;
-
-    fn add(self, other: Position) -> Position {
-        Position(self.0 + other.0)
-    }
-}
-
-impl Sub<Position> for Position {
-    type Output = Position;
-
-    fn sub(self, other: Position) -> Position {
-        Position(self.0 - other.0)
-    }
-}
-
-impl Add<Force> for Force {
-    type Output = Force;
-
-    fn add(self, other: Force) -> Force {
-        Force(self.0 + other.0)
-    }
-}
-
-impl Mul<Force> for Force {
-    type Output = Force;
-
-    fn mul(self, other: Force) -> Force {
-        Force(self.0 * other.0)
-    }
-}
-
-impl Div<Mass> for Force {
-    type Output = Acceleration;
-
-    fn div(self, mass: Mass) -> Acceleration {
-        Acceleration(self.0 / mass.0)
-    }
-}
-
-impl Mul<Position> for SpringConstant {
-    type Output = Force;
-
-    fn mul(self, x: Position) -> Force {
-        Force(self.0 * x.0)
-    }
-}
-
-impl Add<Time> for Time {
-    type Output = Time;
-
-    fn add(self, other: Time) -> Time {
-        Time(self.0 + other.0)
-    }
-}
-
-impl PartialEq for Time {
-    fn eq(&self, other: &Time) -> bool {
-        self.0 == other.0
-    }
-}
-
-impl PartialOrd for Time {
-    fn partial_cmp(&self, other: &Time) -> Option<std::cmp::Ordering> {
-        self.0.partial_cmp(&other.0)
-    }
-}
-
 type BodyId = usize;
 
 #[derive(Clone)]
@@ -221,7 +117,10 @@ impl Spring {
 }
 
 impl Body {
+    /// Loops through all springs, if the spring is connected to the body,
+    /// it's force is added.
     fn acceleration(&self, system: &System) -> Acceleration {
+
         let mut F = Force(0.0);
 
         for spring in system.springs.iter() {
@@ -256,6 +155,7 @@ fn eulers_step(system: System, Δt: Time) -> System {
     new_system
 }
 
+/// Create system as in diagram.
 fn generate_system(seed: u64) -> System {
     let mut rng = ChaChaRng::seed_from_u64(seed);
 
@@ -285,10 +185,7 @@ fn generate_system(seed: u64) -> System {
         })
         .collect();
 
-    // let total_system_width = (bodies.len() + 2) as f64 * SPACING;
-
     let left_wall = SpringJoint::Fixed(Position(0.0));
-    // let right_wall = SpringJoint::Fixed(Position(total_system_width));
 
     springs.insert(
         0,
@@ -299,13 +196,6 @@ fn generate_system(seed: u64) -> System {
             joint2: SpringJoint::Body(0),
         },
     );
-
-    // springs.push(Spring {
-    //     k: SpringConstant(rng.gen_range(SPRING_CONSTANT_RANGE.clone())),
-    //     rest_length: SPRING_REST_LENGTH,
-    //     joint1: right_wall,
-    //     joint2: SpringJoint::Body(bodies.len() - 1),
-    // });
 
     System { bodies, springs }
 }
@@ -319,7 +209,7 @@ fn print_system(system: &System) {
 
 fn simulate(mut system: System) -> System {
     // For smaller h, the simulation is more accurate but slower.
-    let h = Time(0.0001);
+    let h = Time(0.00001);
 
     let t_final = Time(5.0);
 
