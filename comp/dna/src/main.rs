@@ -4,7 +4,9 @@ use std::{
     process::exit,
 };
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -15,7 +17,7 @@ fn main() {
     args[2].hash(&mut s);
     let seed = s.finish();
 
-    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     const LENGTH: usize = 100;
 
@@ -68,7 +70,7 @@ impl<T, E> GracefulExpect<T> for Result<T, E> {
 
 static NEUCLEOTIDES: [char; 4] = ['A', 'C', 'G', 'T'];
 
-fn new_sequence(length: usize, rng: &mut StdRng) -> String {
+fn new_sequence<R: Rng>(length: usize, rng: &mut R) -> String {
     let mut sequence = String::new();
     for _ in 0..length {
         let index = rng.gen::<usize>() % NEUCLEOTIDES.len();

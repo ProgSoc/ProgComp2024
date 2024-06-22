@@ -4,7 +4,9 @@ use std::{
     process::exit,
 };
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -15,7 +17,7 @@ fn main() {
     args[2].hash(&mut s);
     let seed = s.finish();
 
-    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     const LOREM_IPSUM: &str = "Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.";
 
@@ -75,11 +77,11 @@ impl<T, E> GracefulExpect<T> for Result<T, E> {
     }
 }
 
-fn draw_code(
+fn draw_code<R: Rng>(
     strings: Vec<String>,
     height: usize,
     width: usize,
-    rng: &mut StdRng,
+    rng: &mut R,
 ) -> Vec<Vec<String>> {
     let strings = strings
         .into_iter()

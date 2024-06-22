@@ -4,7 +4,9 @@ use std::{
     process::exit,
 };
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -188,7 +190,7 @@ fn random_article(seed: u64) -> String {
         return tokens.join(" ");
     }
 
-    let mut rng = StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
     let start = rng.gen_range(0..tokens.len() - WORDS);
 
     tokens[start..start + WORDS].join(" ")
