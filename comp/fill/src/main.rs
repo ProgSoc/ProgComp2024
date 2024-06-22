@@ -7,6 +7,8 @@ use std::{
 
 use rand::{Rng, SeedableRng};
 
+use rand_chacha::ChaChaRng;
+
 type Canvas = Vec<Vec<bool>>;
 
 fn main() {
@@ -164,7 +166,7 @@ fn paint_crude_circle(canvas: &mut Canvas, center: Point, radius: i32, brush: &B
     const STABISATION: f64 = 0.6;
     const WIGGLE: i32 = 15;
 
-    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     for theta in 0..POINTS {
         let theta = (theta as f64 / POINTS as f64) * 2. * std::f64::consts::PI;

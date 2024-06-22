@@ -5,7 +5,9 @@ use std::{
     sync::atomic::{AtomicUsize, Ordering},
 };
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -16,7 +18,7 @@ fn main() {
     args[2].hash(&mut s);
     let seed = s.finish();
 
-    let mut rng = StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     let length = rng.gen_range(20..=30);
 
@@ -132,7 +134,7 @@ fn create_chain(graph: &mut Graph, length: usize) -> Vec<NodeId> {
     node_ids
 }
 
-fn create_web(graph: &mut Graph, rng: &mut StdRng) -> Vec<NodeId> {
+fn create_web<R: Rng>(graph: &mut Graph, rng: &mut R) -> Vec<NodeId> {
     let node_count = rng.gen_range(10..=20);
     let mut node_ids = vec![];
 
@@ -170,9 +172,9 @@ fn swap_vec_elements<T: Clone>(vec: &mut Vec<T>, a: usize, b: usize) {
     vec[b] = tmp;
 }
 
-fn create_id_shuffle_map(
+fn create_id_shuffle_map<R: Rng>(
     graph: &Graph,
-    rng: &mut StdRng,
+    rng: &mut R,
     start: NodeId,
     end: NodeId,
 ) -> HashMap<NodeId, NodeId> {
@@ -196,7 +198,7 @@ fn create_id_shuffle_map(
     map
 }
 
-fn create_maze(route_length: usize, rng: &mut StdRng) {
+fn create_maze<R: Rng>(route_length: usize, rng: &mut R) {
     assert!(route_length > 1);
 
     let mut graph = Graph::new();

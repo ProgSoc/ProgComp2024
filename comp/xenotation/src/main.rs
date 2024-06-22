@@ -5,7 +5,9 @@ use std::{
 };
 
 use primes::is_prime;
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -16,7 +18,7 @@ fn main() {
     args[2].hash(&mut s);
     let seed = s.finish();
 
-    let mut rng = StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     let n = rng.gen_range(700..10_000);
 

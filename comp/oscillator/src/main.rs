@@ -8,7 +8,9 @@ use std::{
     process::exit,
 };
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -255,7 +257,7 @@ fn eulers_step(system: System, Δt: Time) -> System {
 }
 
 fn generate_system(seed: u64) -> System {
-    let mut rng = StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     let body_count = rng.gen_range(5..8);
 

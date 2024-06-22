@@ -4,7 +4,9 @@ use std::{
     process::exit,
 };
 
-use rand::{rngs::StdRng, Rng, SeedableRng};
+use rand::{Rng, SeedableRng};
+
+use rand_chacha::ChaChaRng;
 
 fn main() {
     let args = std::env::args().collect::<Vec<String>>();
@@ -395,7 +397,7 @@ fn valid_job_allocations(allocations: &Vec<Second>) -> bool {
 }
 
 fn gen(seed: u64) -> Vec<Period> {
-    let mut rng = StdRng::seed_from_u64(seed);
+    let mut rng = ChaChaRng::seed_from_u64(seed);
 
     let mut occs = vec![];
 

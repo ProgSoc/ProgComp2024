@@ -13,7 +13,7 @@ points = 30
 difficulty = 3
 ```
 # 🏨 Hotel Rooms
-From a list of arrival and departure of hotel guests as timestamps **in seconds**, **allocate a room to each guest** given that each room **must be cleaned before a new guest can stay there**. The hotel's cleaning staff has **5 members** and each room takes **1 member 30 minuets (1800 seconds) to clean**. Each guest must have their own room. The hotel **only has 50 rooms** and your solution must not exceed this.
+From a list of arrival and departure of hotel guests as timestamps **in seconds**, **allocate a room to each guest** given that each room **must be cleaned before a new guest can stay there**. The hotel's cleaning staff has **5 members** and each room takes **1 member 30 minutes (1800 seconds) to clean**. Each guest must have their own room. The hotel **only has 50 rooms** and your solution must not exceed this.
 
 ## Input
 Each line of the input represents a guest's arrival time followed by their departure time separated by a comma in Unix seconds.

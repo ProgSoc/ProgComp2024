@@ -30,6 +30,7 @@ name = "oscillator"
 version = "0.1.0"
 dependencies = [
  "rand",
+ "rand_chacha",
  "rustplotlib",
 ]
 

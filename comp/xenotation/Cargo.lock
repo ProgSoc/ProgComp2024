@@ -89,6 +89,7 @@ dependencies = [
  "fast-math",
  "primes",
  "rand",
+ "rand_chacha",
 ]
 
 [[package]]
