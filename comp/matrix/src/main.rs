@@ -83,6 +83,8 @@ fn draw_code<R: Rng>(
     width: usize,
     rng: &mut R,
 ) -> Vec<Vec<String>> {
+    // Append spaces to the end of each string. Messy but simple way to ensure that stings
+    // have at least one space between them.
     let strings = strings
         .into_iter()
         .map(|s| s + " ")
@@ -90,20 +92,26 @@ fn draw_code<R: Rng>(
 
     let height = height + 1; // Spaces at end of each string
 
+    // Initialise blank 2D array
     let mut result = vec![vec![" ".to_string(); width]; height];
 
     for string in strings {
+        // Pick initial position to try to draw the string to
         let mut x = rng.gen_range(0..width);
         let mut y = rng.gen_range(0..=height - string.len());
 
+        // Check that the vertical range is vacant
         let (x_original, y_original) = (x, y);
         while !vert_range_is_vacant(&result, x, y, string.len()) {
+            // If not, try 1 character below. If at bottom, try next column.
+
             y += 1;
             if y + string.len() >= result.len() {
                 y = 0;
                 x = (x + 1) % width;
 
-                // Try the random y at the new x so things don't bunch up around the top.
+                // Retry the random y at the new x so things don't bunch up around the top.
+                // Otherwise just start from the top and check the entire column.
                 if vert_range_is_vacant(&result, x, y_original, string.len()) {
                     y = y_original;
                 }

@@ -125,6 +125,9 @@ impl Period {
     }
 }
 
+/// Create graph of occupancies that cannot be allocated the same room
+/// (meaning that they are within CLEANING_TIME of each other and there
+/// would not be enough time to clean the room between them)
 fn create_graph(stays: &Vec<Period>) -> Vec<Occupancy> {
     let mut graph: Graph = stays
         .into_iter()
@@ -152,6 +155,7 @@ fn create_graph(stays: &Vec<Period>) -> Vec<Occupancy> {
     graph
 }
 
+/// Greedily assigns rooms based on the graph created by create_graph
 fn colour_graph(graph: &mut Graph) -> usize {
     let mut k = 0;
 
@@ -380,6 +384,8 @@ fn next_avalible_time(
     None
 }
 
+/// Asserts that one cleaning staff member does not have to clean two rooms at the same time.
+/// Checks that all of the cleaning periods start at least CLEANING_TIME apart.
 fn valid_job_allocations(allocations: &Vec<Second>) -> bool {
     for i in 0..allocations.len() {
         for j in 0..allocations.len() {
