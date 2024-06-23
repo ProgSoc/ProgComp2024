@@ -7,7 +7,7 @@ env = {}
 exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
-points = 27
+points = 25
 difficulty = 3
 ```
 

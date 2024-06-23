@@ -7,19 +7,21 @@ env = {}
 exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
-points = 16
-difficulty = 2
+points = 21
+difficulty = 3
 ```
 
 # 📏 Coupled Oscillator
-Given the initial positions and velocities of several objects, their masses and the spring constants the springs between them, find the **position of $m_1$ after 5 seconds** (there is a small tolerance for answers of ±0.01). **Each spring is at rest at a length of 5**. The spring associated with each mass is connected to the previous one with the spring on $m_1$ being fixed to the wall at $x = 0$. Assume friction is negligible and the springs are connected to the centre of each mass.
+Given the initial positions and velocities of several objects, their masses and the [spring constants](https://en.wikipedia.com/wiki/hooke%27s_law) of springs between them, find the **position of m<sub>1</sub> after 5 seconds** (there is a small tolerance for answers of ±0.05). **Each spring is at rest at a length of 5**. The spring associated with each mass is connected to the previous one with the spring on m<sub>1</sub> being fixed to the wall at x = 0. Assume friction is negligible and the springs are connected to the centre of each mass.
 
 ![diagram](diagram.png)
 
 ## Required Formulae 
-* $x(t) = \int v(t) \cdot \text d t = \iint a(t) \cdot \text d t$
-* $a = \frac{F}{m}$
-* $F = -kx$ where $x$ is the spring's displacement from it's resting position.
+![formulea](formula.png)
+
+To clarify:
+* A spring with spring constant k<sub>1</sub> connects m<sub>1</sub> to the wall at x = 0. This means that the force on m<sub>1</sub> at any time is -k<sub>1</sub> times the position of m<sub>1</sub> (the position of one end of the spring) minus 0 (the position of the other end of the spring) minus 5 (the length at which the spring is at rest.
+* The force is the same at either end of a spring. This means that both m<sub>1</sub> and m<sub>2</sub> (which are both connected by a spring with spring constant k<sub>2</sub>) will both experience a force of magnitude k<sub>2</sub> times the difference between 5 (the resting length of the spring) and the distance between m<sub>1</sub> and m<sub>2</sub> (the length of the spring at that instant) but in opposite directions.
 
 
 ## Input
@@ -35,4 +37,4 @@ x, v, m, k
 ```
 
 ## Output
-Your output should be the final position of $m_1$.
+Your output should be the final position of m<sub>1</sub>.
