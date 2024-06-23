@@ -1,6 +1,4 @@
 ```toml
-# TODO: Add clarifications around `<` / `<=` and off-by-one for cleaning times and arrival/departure times
-
 [fuzz]
 exec = ["cargo", "run", "--release", "--", "generate"]
 env = {}

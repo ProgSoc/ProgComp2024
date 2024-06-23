@@ -393,7 +393,7 @@ fn valid_job_allocations(allocations: &Vec<Second>) -> bool {
                 continue;
             }
 
-            if (allocations[i] - allocations[j]).abs() <= CLEANING_TIME {
+            if (allocations[i] - allocations[j]).abs() < CLEANING_TIME {
                 return false;
             }
         }
