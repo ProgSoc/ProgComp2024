@@ -9,7 +9,7 @@ env = {}
 exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
-points = 30
+points = 27
 difficulty = 3
 ```
 # 🏨 Hotel Rooms
