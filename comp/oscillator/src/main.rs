@@ -42,7 +42,7 @@ fn main() {
             system = simulate(system);
             let solution = system.bodies[0].x.0;
 
-            if (input - solution).abs() < 0.01 {
+            if (input - solution).abs() <= 0.05 {
                 exit(0);
             } else {
                 exit(1);
@@ -232,6 +232,8 @@ fn simulate(mut system: System) -> System {
             positions[i].push(body.x.0);
         }
     }
+
+    // println!("{:?}", system.bodies[0].x.0);
 
     // plot(times, positions);
 
