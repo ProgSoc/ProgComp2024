@@ -7,8 +7,8 @@ env = {}
 exec = ["cargo", "run", "--release", "--quiet", "--", "validate"]
 
 [problem]
-points = 16
-difficulty = 2
+points = 21
+difficulty = 3
 ```
 
 # 📏 Coupled Oscillator
