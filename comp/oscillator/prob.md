@@ -12,7 +12,7 @@ difficulty = 3
 ```
 
 # 📏 Coupled Oscillator
-Given the initial positions and velocities of several objects, their masses and the [spring constants](https://en.wikipedia.com/hooke%27s_law) of springs between them, find the **position of m<sub>1</sub> after 5 seconds** (there is a small tolerance for answers of ±0.05). **Each spring is at rest at a length of 5**. The spring associated with each mass is connected to the previous one with the spring on m<sub>1</sub> being fixed to the wall at x = 0. Assume friction is negligible and the springs are connected to the centre of each mass.
+Given the initial positions and velocities of several objects, their masses and the [spring constants](https://en.wikipedia.com/wiki/hooke%27s_law) of springs between them, find the **position of m<sub>1</sub> after 5 seconds** (there is a small tolerance for answers of ±0.05). **Each spring is at rest at a length of 5**. The spring associated with each mass is connected to the previous one with the spring on m<sub>1</sub> being fixed to the wall at x = 0. Assume friction is negligible and the springs are connected to the centre of each mass.
 
 ![diagram](diagram.png)
 
