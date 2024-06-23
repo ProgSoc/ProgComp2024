@@ -19,12 +19,12 @@ In this problem we'll be greeting people.
 
 For example, `Linus` will be converted to `Hello Linus!`.
 
-## Input format
+## Input
 
 The first line contains a string `S` which is the name to be greeted.
 
-S is at least one character long, and contains only letters.
+`S` is at least one character long, and contains only letters.
 
-## Output format
+## Output
 
 Output the greeting to the name.
