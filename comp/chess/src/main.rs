@@ -154,7 +154,8 @@ fn main() {
         }
         "validate" => {
             // First find the solution ourselves.
-            let solution_string = perft(position, 4, &bishop_magics, &rook_magics).to_string();
+            let final_value = perft(position, 4, &bishop_magics, &rook_magics);
+            let solution_string = final_value.to_string();
 
             // Then we get the input.
             let mut buffer = String::new();
@@ -163,6 +164,15 @@ fn main() {
             if buffer.trim() == solution_string {
                 exit(0);
             } else {
+                if let Ok(value) = buffer.trim().parse::<i64>() {
+                    if value < final_value as i64 {
+                        eprintln!("Your answer was too low.");
+                    } else if value > final_value as i64 {
+                        eprintln!("Your answer was too high.");
+                    }
+                } else {
+                    eprintln!("Expected 64-bit integer.");
+                }
                 exit(1);
             }
         }

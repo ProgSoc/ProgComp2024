@@ -191,6 +191,16 @@ fn main() {
             if buffer.trim() == solution_string {
                 exit(0);
             } else {
+                let final_value = min * max;
+                if let Ok(value) = buffer.trim().parse::<i64>() {
+                    if value < final_value as i64 {
+                        eprintln!("Your answer was too low.");
+                    } else if value > final_value as i64 {
+                        eprintln!("Your answer was too high.");
+                    }
+                } else {
+                    eprintln!("Expected 64-bit integer.");
+                }
                 exit(1);
             }
         }

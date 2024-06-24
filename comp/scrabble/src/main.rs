@@ -314,14 +314,14 @@ fn main() {
                 pv,
             } = search::<9>(&graph, 0, Player::Alice);
 
-            let solution_string = format!(
-                "{} {}",
-                pv.iter()
-                    .take_while(|c| c.is_some())
-                    .map(|c| c.unwrap())
-                    .collect::<String>(),
-                (alice as u64) * (bob as u64) * (charlie as u64),
-            );
+            let pv_string = pv.iter()
+                .take_while(|c| c.is_some())
+                .map(|c| c.unwrap())
+                .collect::<String>();
+
+            let product = (alice as u64) * (bob as u64) * (charlie as u64);
+
+            let solution_string = format!("{} {}", pv_string, product);
 
             // Then we get the input.
             let mut buffer = String::new();
@@ -330,6 +330,22 @@ fn main() {
             if buffer.trim() == solution_string {
                 exit(0);
             } else {
+                let splitted_values: Vec<String> = buffer.split_whitespace().map(|x| x.to_string()).collect();
+                if splitted_values.len() != 2 {
+                    eprintln!("Expected two space-separated values.");
+                } else {
+                    if let Ok(value) = splitted_values[1].parse::<u64>() {
+                        if splitted_values[0] != pv_string {
+                            eprintln!("Incorrect final word.");
+                        } else if value < product {
+                            eprintln!("Your product was too low.");
+                        } else if value > product {
+                            eprintln!("Your product was too high.");
+                        }
+                    } else {
+                        eprintln!("Expected positive 64-bit integer for product.");
+                    }
+                }
                 exit(1);
             }
         }
