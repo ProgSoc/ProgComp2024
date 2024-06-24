@@ -1,5 +1,5 @@
 use std::{
-    collections::{hash_map::DefaultHasher, HashMap},
+    collections::{hash_map::DefaultHasher, BTreeMap},
     hash::{Hash, Hasher},
     process::exit,
     sync::atomic::{AtomicUsize, Ordering},
@@ -61,7 +61,7 @@ impl<T, E> GracefulExpect<T> for Result<T, E> {
     }
 }
 
-type Graph = HashMap<NodeId, Node>;
+type Graph = BTreeMap<NodeId, Node>;
 type NodeId = usize;
 
 struct Node {
@@ -70,7 +70,7 @@ struct Node {
 
 fn print_graph(
     graph: &Graph,
-    id_shuffle_map: Option<&HashMap<NodeId, NodeId>>,
+    id_shuffle_map: Option<&BTreeMap<NodeId, NodeId>>,
     start: NodeId,
     end: NodeId,
 ) {
@@ -86,7 +86,7 @@ fn print_graph(
     }
 }
 
-fn print_node(node_id: &NodeId, node: &Node, id_shuffle_map: Option<&HashMap<NodeId, NodeId>>) {
+fn print_node(node_id: &NodeId, node: &Node, id_shuffle_map: Option<&BTreeMap<NodeId, NodeId>>) {
     let neighbours = node
         .neighbors
         .iter()
@@ -101,7 +101,7 @@ fn print_node(node_id: &NodeId, node: &Node, id_shuffle_map: Option<&HashMap<Nod
     );
 }
 
-fn apply_shuffle_map(id: NodeId, id_shuffle_map: Option<&HashMap<NodeId, NodeId>>) -> NodeId {
+fn apply_shuffle_map(id: NodeId, id_shuffle_map: Option<&BTreeMap<NodeId, NodeId>>) -> NodeId {
     if let Some(id_shuffle_map) = id_shuffle_map {
         *id_shuffle_map.get(&id).unwrap()
     } else {
@@ -183,8 +183,8 @@ fn create_id_shuffle_map<R: Rng>(
     rng: &mut R,
     start: NodeId,
     end: NodeId,
-) -> HashMap<NodeId, NodeId> {
-    let mut map = HashMap::new();
+) -> BTreeMap<NodeId, NodeId> {
+    let mut map = BTreeMap::new();
     map.insert(start, 0);
     map.insert(end, 1);
 
