@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+#![allow(unused_imports)]
+
 use std::collections::HashSet;
 
 use crate::{print_terrain, Terrain};
