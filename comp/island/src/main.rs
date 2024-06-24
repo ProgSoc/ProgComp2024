@@ -309,6 +309,13 @@ fn generate_problem(seed: u64) -> Terrain {
 
     terrain = gauss_blur(terrain);
 
+    // Round all numbers to 2 decimal places
+    for row in terrain.iter_mut() {
+        for cell in row.iter_mut() {
+            *cell = (*cell * 100.0).round() / 100.0;
+        }
+    }
+
     if solve(&terrain).is_none() || terrain[0][0] > 0.0 {
         return generate_problem(seed + 1);
     }
