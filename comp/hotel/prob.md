@@ -32,5 +32,5 @@ Each line of the input represents a guest's arrival time followed by their depar
 ## Output
 Your output should be a comma-separated list of room numbers **starting from 0** (whitespace is ignored) that corresponds to each line in the input in the order that they are given. The **maximum allowed room number in your answer is 49** as there are only 50 rooms.
 ```
-0, 1, 2, 0, 3, 4, 1, 2, 5, 6,
+0, 1, 2, 0, 3, 4, 1, 2, 5, 6
 ```
